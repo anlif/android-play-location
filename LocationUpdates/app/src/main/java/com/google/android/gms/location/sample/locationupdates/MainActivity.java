@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -93,10 +93,14 @@ public class MainActivity extends ActionBarActivity implements
     protected TextView mLastUpdateTimeTextView;
     protected TextView mLatitudeTextView;
     protected TextView mLongitudeTextView;
+    protected TextView mCogTextView;
+    protected TextView mSogTextView;
 
     // Labels.
     protected String mLatitudeLabel;
     protected String mLongitudeLabel;
+    protected String mCogLabel;
+    protected String mSogLabel;
     protected String mLastUpdateTimeLabel;
 
     /**
@@ -120,11 +124,15 @@ public class MainActivity extends ActionBarActivity implements
         mStopUpdatesButton = (Button) findViewById(R.id.stop_updates_button);
         mLatitudeTextView = (TextView) findViewById(R.id.latitude_text);
         mLongitudeTextView = (TextView) findViewById(R.id.longitude_text);
+        mCogTextView = (TextView) findViewById(R.id.cog_text);
+        mSogTextView = (TextView) findViewById(R.id.sog_text);
         mLastUpdateTimeTextView = (TextView) findViewById(R.id.last_update_time_text);
 
         // Set labels.
         mLatitudeLabel = getResources().getString(R.string.latitude_label);
         mLongitudeLabel = getResources().getString(R.string.longitude_label);
+        mCogLabel = "COG";
+        mSogLabel = "SOG";
         mLastUpdateTimeLabel = getResources().getString(R.string.last_update_time_label);
 
         mRequestingLocationUpdates = false;
@@ -270,8 +278,18 @@ public class MainActivity extends ActionBarActivity implements
                 mCurrentLocation.getLatitude()));
         mLongitudeTextView.setText(String.format("%s: %f", mLongitudeLabel,
                 mCurrentLocation.getLongitude()));
+        mCogTextView.setText(String.format("%s: %f", mCogLabel,
+                mCurrentLocation.getBearing()));
+        mSogTextView.setText(String.format("%s: %f", mSogLabel,
+                mCurrentLocation.getSpeed()));
         mLastUpdateTimeTextView.setText(String.format("%s: %s", mLastUpdateTimeLabel,
                 mLastUpdateTime));
+        Log.i("LocationActivity", String.format("%s: %s, %s: %.3f, %s: %.3f, %s: %.3f, %s %.3f",
+                mLastUpdateTimeLabel, mLastUpdateTime,
+                mLatitudeLabel, mCurrentLocation.getLatitude(),
+                mLongitudeLabel, mCurrentLocation.getLongitude(),
+                mCogLabel, mCurrentLocation.getBearing(),
+                mSogLabel, mCurrentLocation.getSpeed()));
     }
 
     /**
